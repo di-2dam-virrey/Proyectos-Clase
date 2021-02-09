@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Mis Contactos</string>
+    <string name="nombre">Contacto Numero1</string>
+    <string name="telefono">123456789</string>
+    <string name="email">contacto_1@correo.es</string>
+</resources>
