@@ -1,10 +1,15 @@
 package android.example.miscontactos;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,6 +19,10 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String EXTRA_NAME = "name";
+    public static final String EXTRA_TELEFONO = "telefono" ;
+    public static final String EXTRA_EMAIL = "email" ;
+    private static final int ASK_QUESTION_REQUEST = 1;
     //Declaramos las variables miembro necesarias
     private ArrayList<Contacto> listContactos;
     private Agenda agenda = new Agenda();
@@ -23,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         //Llenamos la agenda con los elementos por defecto
         agenda.filledAgenda();
         //Instanciamos el arrayList de contactos para trabajar con el
@@ -32,6 +43,38 @@ public class MainActivity extends AppCompatActivity {
         //Dotamos de comportamiento al listViewm
         onClicklistView();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_create_contact:
+                Intent intent = new Intent(MainActivity.this, NuevoContacto.class);
+                startActivityForResult(intent, ASK_QUESTION_REQUEST);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == ASK_QUESTION_REQUEST){
+            if(resultCode == RESULT_OK){
+                String nombre = data.getStringExtra("name");
+                String telefono = data.getStringExtra("telefono");
+                String email = data.getStringExtra("email");
+                listContactos.add(new Contacto(nombre,telefono,email));
+            }
+        }
+    }
+
     //método que nos construye el listView
     //mediante el uso de un adaptador
     public void showList(){

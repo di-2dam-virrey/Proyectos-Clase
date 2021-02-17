@@ -3,4 +3,6 @@
     <string name="nombre">Contacto Numero1</string>
     <string name="telefono">123456789</string>
     <string name="email">contacto_1@correo.es</string>
+    <string name="add_contact">Nuevo Contacto</string>
+    <string name="btn_add_contact">Añadir Contacto</string>
 </resources>
